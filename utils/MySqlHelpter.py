@@ -28,7 +28,10 @@ class MysqlServer(object):
     def __get_conn(self):
         try:
             db_config = self._db_config
-            connection = pymysql.connect(host=db_config['mysql.host'], port=db_config['mysql.port'], user=db_config['mysql.username'],
+            port = 3306
+            if 'port' in db_config:
+                port = int(db_config['mysql.port'])
+            connection = pymysql.connect(host=db_config['mysql.host'], port=port, user=db_config['mysql.username'],
                                      passwd=db_config['mysql.password'], db=db_config['mysql.database'], charset="utf8")
             connection.ping(True)
             return connection
